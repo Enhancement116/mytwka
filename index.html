@@ -3,53 +3,599 @@
 <head>
     <meta charset="utf-8" />
     <title>Taiwan CNY Trip 2026</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Poppins', 'Noto Serif TC', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .font-serif-tc { font-family: 'Noto Serif TC', serif; }
+        
+        /* 背景紋理 */
         .pattern-bg {
             background-color: #7f1d1d;
             background-image: radial-gradient(#991b1b 1px, transparent 1px), radial-gradient(#991b1b 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
-        /* 自定義捲軸 */
+
+        /* 捲軸美化 */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fca5a5; }
         ::-webkit-scrollbar-thumb { background: #b91c1c; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #991b1b; }
+
+        /* 動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
     </style>
 </head>
-<body class="pattern-bg text-white h-screen flex flex-col items-center justify-center p-4">
+<body class="bg-red-950 text-white h-screen overflow-hidden flex flex-col pattern-bg font-sans">
 
-    <div class="max-w-2xl w-full bg-red-900/80 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-red-700 text-center">
-        <h1 class="text-4xl font-bold mb-4 font-serif-tc">2026 台灣春節行程</h1>
-        <p class="text-red-200 mb-6">歡迎來到翔晨的旅遊計畫頁面</p>
-        
-        <div id="content" class="text-left space-y-4">
-            <div class="bg-red-800/50 p-4 rounded-lg">
-                <p>📍 載入中...</p>
-            </div>
-        </div>
-
-        <button onclick="startTrip()" class="mt-8 bg-yellow-500 hover:bg-yellow-400 text-red-950 font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg">
-            開始探索行程
-        </button>
-    </div>
+    <!-- 應用程式掛載點 -->
+    <div id="app" class="flex flex-col h-full"></div>
 
     <script>
-        // 這是你的互動邏輯
-        function startTrip() {
-            const content = document.getElementById('content');
-            content.innerHTML = `
-                <div class="bg-red-800/50 p-4 rounded-lg animate-fade-in">
-                    <p class="font-bold text-yellow-400">📅 初一：高雄出發</p>
-                    <p class="text-sm text-red-100">準備開啟 2026 精彩旅程！</p>
+        // ==========================================
+        // 1. 資料存儲 (State & Data)
+        // ==========================================
+        const AppState = {
+            currentView: 'home', // 'home' | 'itinerary' | 'preparation' | 'admin'
+            currentDayIndex: 0,
+            luckyDraw: {
+                openedIndex: null,
+                currentFortune: null
+            },
+            adminClickCount: 0,
+            adminClickTimer: null
+        };
+
+        // 初始行程資料 (來自 trip.store.ts)
+        let TripData = {
+            title: "台灣新春之旅 2026",
+            days: [
+                {
+                    dayNumber: 1,
+                    theme: "抵達 & 西門町",
+                    highlights: "歡迎來到台灣！第一天輕鬆為主，適應氣候，享受街頭美食。",
+                    imgUrl: "ximending",
+                    activities: [
+                        { time: "14:00", title: "抵達桃園機場", description: "搭乘機場捷運直達台北車站 (約40分鐘)。購買悠遊卡與SIM卡。", location: "桃園機場 (TPE)", icon: "✈️" },
+                        { time: "16:00", title: "飯店辦理入住", description: "前往西門町飯店辦理入住，稍作休息，整理行李。", location: "西門町", icon: "🏨" },
+                        { time: "18:00", title: "探索西門町", description: "前往西門町徒步區，體驗台灣年輕人的活力與熱鬧氛圍。", location: "西門町", icon: "🛍️" },
+                        { time: "19:00", title: "晚餐：街頭小吃", description: "推薦：阿宗麵線、豪大大雞排、老天祿滷味 (適合當宵夜)。", location: "西門町商圈", icon: "🍜" }
+                    ]
+                },
+                {
+                    dayNumber: 2,
+                    theme: "老台北年味",
+                    highlights: "感受迪化街的熱鬧年貨大街，體驗傳統台灣新年的氣氛。",
+                    imgUrl: "dihua street",
+                    activities: [
+                        { time: "09:30", title: "中正紀念堂", description: "參觀自由廣場與衛兵交接儀式，拍照留念。", location: "自由廣場", icon: "🏛️" },
+                        { time: "11:30", title: "午餐：鼎泰豐", description: "品嚐世界聞名的小籠包 (建議提早抽號碼牌)。", location: "信義路/南西店", icon: "🥟" },
+                        { time: "14:00", title: "迪化街年貨大街", description: "感受最濃厚的年味，試吃糖果、買伴手禮，參拜霞海城隍廟。", location: "大稻埕", icon: "🧧" },
+                        { time: "18:00", title: "寧夏夜市", description: "米其林必比登推薦夜市，必吃：圓環邊蚵仔煎、劉芋仔蛋黃芋餅。", location: "寧夏路", icon: "🍢" }
+                    ]
+                },
+                {
+                    dayNumber: 3,
+                    theme: "九份放天燈",
+                    highlights: "前往山城九份，傍晚在平溪放天燈祈福，許下新年願望。",
+                    imgUrl: "jiufen",
+                    activities: [
+                        { time: "10:00", title: "前往九份老街", description: "搭乘包車或客運前往瑞芳九份。", location: "瑞芳", icon: "🚕" },
+                        { time: "11:30", title: "九份老街茶樓", description: "在阿妹茶樓品茶，欣賞山海美景，品嚐芋圓。", location: "九份", icon: "🍵" },
+                        { time: "15:30", title: "十分瀑布", description: "號稱台灣的尼加拉瀑布，壯觀迷人。", location: "十分", icon: "🌊" },
+                        { time: "17:30", title: "平溪放天燈", description: "寫下全家人的新年願望，看天燈冉冉升空。Huat Ah!", location: "平溪/十分", icon: "🏮" }
+                    ]
+                },
+                {
+                    dayNumber: 4,
+                    theme: "現代台北 & 購物",
+                    highlights: "登上台北101，信義區購物，為家人購置新衣新鞋。",
+                    imgUrl: "taipei 101",
+                    activities: [
+                        { time: "10:30", title: "台北 101 觀景台", description: "從 89 樓俯瞰台北市景，參觀風阻尼球。", location: "台北 101", icon: "🏙️" },
+                        { time: "13:00", title: "信義區商圈", description: "新光三越、微風南山逛街購物。感受新年裝飾。", location: "信義區", icon: "🛍️" },
+                        { time: "16:00", title: "松山文創園區", description: "逛逛誠品生活，欣賞文創商品與展覽。", location: "松菸", icon: "🎨" },
+                        { time: "19:00", title: "饒河街夜市", description: "福州世祖胡椒餅、藥燉排骨。參拜慈祐宮。", location: "饒河街", icon: "🐉" }
+                    ]
+                },
+                {
+                    dayNumber: 5,
+                    theme: "溫泉與淡水夕陽",
+                    highlights: "前往北投泡湯放鬆身心，下午到淡水欣賞美麗夕陽。",
+                    imgUrl: "beitou hot spring",
+                    activities: [
+                        { time: "10:00", title: "北投溫泉博物館", description: "參觀日式建築，了解溫泉歷史，附近有地熱谷。", location: "新北投", icon: "♨️" },
+                        { time: "12:00", title: "午餐：溫泉拉麵", description: "享用熱騰騰的滿來溫泉拉麵。", location: "新北投", icon: "🍜" },
+                        { time: "14:30", title: "淡水老街", description: "搭捷運至淡水，品嚐阿給、魚酥，逛逛河岸商店。", location: "淡水", icon: "🚢" },
+                        { time: "17:00", title: "漁人碼頭夕陽", description: "在情人橋欣賞落日美景，享受海風吹拂。", location: "漁人碼頭", icon: "🌅" }
+                    ]
+                },
+                {
+                    dayNumber: 6,
+                    theme: "伴手禮 & 返程",
+                    highlights: "採買鳳梨酥、牛軋糖等伴手禮，帶著滿滿回憶回家。",
+                    imgUrl: "taiwan souvenirs",
+                    activities: [
+                        { time: "10:00", title: "佳德/微熱山丘", description: "購買知名的鳳梨酥當作伴手禮送給親朋好友。", location: "松山區", icon: "🍍" },
+                        { time: "12:00", title: "最後午餐", description: "享用道地的台式牛肉麵，為旅程畫下句點。", location: "台北市區", icon: "🥢" },
+                        { time: "14:00", title: "前往機場", description: "搭乘機場捷運或包車前往桃園機場。", location: "台北車站", icon: "🚕" },
+                        { time: "16:00", title: "搭機返馬", description: "平安回家，期待下次再來台灣玩！", location: "桃園機場", icon: "✈️" }
+                    ]
+                }
+            ]
+        };
+
+        const Fortunes = [
+            { title: "大吉大利", desc: "今天去哪裡都順利！記得多拍幾張全家福。" },
+            { title: "財源滾滾", desc: "穿紅色衣服出門，會遇到好事喔！夜市吃飽飽。" },
+            { title: "平安喜樂", desc: "放慢腳步，享受台灣的人情味。記得喝水休息。" },
+            { title: "心想事成", desc: "去廟裡拜拜會很靈驗喔！適合買彩券。" },
+            { title: "步步高升", desc: "去爬象山或登上101，視野越好運氣越好！" }
+        ];
+
+        // 暫存編輯資料 (Admin用)
+        let EditData = null;
+
+        // ==========================================
+        // 2. 應用程式邏輯 (Actions)
+        // ==========================================
+        const Actions = {
+            navigate: (view) => {
+                AppState.currentView = view;
+                Render();
+            },
+            
+            selectDay: (index) => {
+                AppState.currentDayIndex = index;
+                Render();
+            },
+
+            selectDayAndNavigate: (index) => {
+                AppState.currentDayIndex = index;
+                AppState.currentView = 'itinerary';
+                Render();
+            },
+
+            handleLogoClick: () => {
+                AppState.adminClickCount++;
+                if (AppState.adminClickTimer) clearTimeout(AppState.adminClickTimer);
+
+                // 點擊 5 次進入 Admin
+                if (AppState.adminClickCount >= 5) {
+                    Actions.navigate('admin');
+                    AppState.adminClickCount = 0;
+                } else {
+                    AppState.adminClickTimer = setTimeout(() => {
+                        Actions.navigate('home');
+                        AppState.adminClickCount = 0;
+                    }, 500);
+                }
+            },
+
+            openPacket: (index) => {
+                if (AppState.luckyDraw.openedIndex !== null) return;
+                const random = Math.floor(Math.random() * Fortunes.length);
+                AppState.luckyDraw.openedIndex = index;
+                AppState.luckyDraw.currentFortune = Fortunes[random];
+                Render();
+            },
+
+            resetPacket: () => {
+                AppState.luckyDraw.openedIndex = null;
+                AppState.luckyDraw.currentFortune = null;
+                Render();
+            },
+
+            // Admin Logic
+            initAdmin: () => {
+                // 深拷貝資料以供編輯
+                EditData = JSON.parse(JSON.stringify(TripData));
+                Render();
+            },
+
+            updateEditData: (path, value) => {
+                // 路徑解析 e.g., 'days.0.theme'
+                const keys = path.split('.');
+                let current = EditData;
+                for(let i=0; i<keys.length-1; i++){
+                    current = current[keys[i]];
+                }
+                current[keys[keys.length-1]] = value;
+                // 不即時重繪，避免輸入框失去焦點，僅更新資料
+            },
+
+            addActivity: (dayIndex) => {
+                EditData.days[dayIndex].activities.push({
+                    time: '00:00', title: '新活動', description: '描述...', location: '', icon: '📌'
+                });
+                Render();
+            },
+
+            removeActivity: (dayIndex, actIndex) => {
+                if(confirm('確定刪除?')) {
+                    EditData.days[dayIndex].activities.splice(actIndex, 1);
+                    Render();
+                }
+            },
+
+            addDay: () => {
+                EditData.days.push({
+                    dayNumber: EditData.days.length + 1,
+                    theme: '新的一天', highlights: '亮點...', imgUrl: 'taiwan', activities: []
+                });
+                Render();
+            },
+
+            removeDay: (dayIndex) => {
+                if(confirm('確定刪除整天?')) {
+                    EditData.days.splice(dayIndex, 1);
+                    // 重新編號
+                    EditData.days.forEach((d, i) => d.dayNumber = i + 1);
+                    Render();
+                }
+            },
+
+            saveAdmin: () => {
+                TripData = JSON.parse(JSON.stringify(EditData));
+                alert('已儲存！');
+                Render();
+            },
+
+            cancelAdmin: () => {
+                if(confirm('放棄修改?')) {
+                    EditData = null;
+                    Actions.navigate('home');
+                }
+            }
+        };
+
+        // ==========================================
+        // 3. 元件渲染函數 (HTML Templates)
+        // ==========================================
+
+        const Header = () => `
+            <header class="bg-red-900 border-b-4 border-yellow-500 shadow-xl relative overflow-hidden z-20 flex-shrink-0">
+                <div class="absolute -top-10 -left-10 w-32 h-32 bg-yellow-500/20 rounded-full blur-xl"></div>
+                <div class="absolute top-0 right-0 w-40 h-40 bg-red-600/20 rounded-full blur-2xl"></div>
+
+                <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center relative z-10">
+                    <div class="flex items-center gap-4 mb-4 md:mb-0 select-none">
+                        <div onclick="Actions.handleLogoClick()" class="w-14 h-14 rounded-full border-4 border-yellow-400 flex items-center justify-center text-3xl bg-red-800 text-yellow-400 cursor-pointer hover:bg-red-700 active:scale-95 transition-all shadow-lg">⭕</div>
+                        <div onclick="Actions.navigate('home')" class="cursor-pointer">
+                            <h1 class="text-3xl md:text-4xl font-bold text-yellow-100 font-serif-tc tracking-widest">${TripData.title}</h1>
+                        </div>
+                    </div>
+                    <nav class="flex gap-8 text-xl md:text-2xl font-bold text-yellow-100/90">
+                        <button onclick="Actions.navigate('itinerary')" class="hover:text-yellow-400 flex items-center gap-2 transition-colors py-2">
+                            <span class="text-yellow-500 text-2xl">📅</span> 行程
+                        </button>
+                        <button onclick="Actions.navigate('preparation')" class="hover:text-yellow-400 flex items-center gap-2 transition-colors py-2">
+                            <span class="text-yellow-500 text-2xl">💡</span> 貼士
+                        </button>
+                    </nav>
+                </div>
+            </header>
+        `;
+
+        const Hero = () => {
+            const { openedIndex, currentFortune } = AppState.luckyDraw;
+            
+            // 紅包列表 HTML
+            const packetsHtml = [0, 1, 2].map(index => {
+                const isOpened = openedIndex !== null;
+                const isThis = openedIndex === index;
+                let classes = "relative w-36 h-52 md:w-48 md:h-64 bg-red-700 rounded-3xl shadow-xl border-b-[12px] border-red-900 transition-all duration-300 flex flex-col items-center justify-center overflow-hidden group";
+                
+                if (isOpened && !isThis) classes += " grayscale opacity-50 cursor-not-allowed";
+                else if (!isOpened) classes += " hover:-translate-y-4 cursor-pointer";
+
+                return `
+                <button onclick="Actions.openPacket(${index})" class="${classes}" ${isOpened ? 'disabled' : ''}>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-red-600 to-red-800">
+                         <div class="w-20 h-20 md:w-28 md:h-28 rounded-full border-[6px] border-yellow-400 flex items-center justify-center bg-red-700 shadow-inner group-hover:scale-110 transition-transform">
+                            <span class="text-5xl md:text-7xl text-yellow-400 font-serif-tc font-bold">福</span>
+                         </div>
+                         <div class="absolute bottom-0 w-full h-10 md:h-14 bg-yellow-500/20 rounded-t-[50%]"></div>
+                    </div>
+                </button>
+                `;
+            }).join('');
+
+            // 運勢結果 HTML
+            const fortuneHtml = currentFortune ? `
+                <div class="border-[6px] border-dashed border-yellow-400 bg-yellow-50 rounded-3xl p-10 md:p-12 text-center animate-fadeIn mx-4 md:mx-12 shadow-inner mt-8">
+                    <div class="text-4xl md:text-6xl mb-8 flex justify-center items-center gap-6">
+                        <span>🎊</span>
+                        <span class="font-bold text-red-900 font-serif-tc">${currentFortune.title}</span>
+                        <span>🎊</span>
+                    </div>
+                    <p class="text-slate-800 text-3xl md:text-4xl mb-8 font-bold leading-relaxed">${currentFortune.desc}</p>
+                    <button onclick="Actions.resetPacket()" class="px-8 py-3 bg-red-100 hover:bg-red-200 text-red-800 rounded-xl text-2xl font-bold mt-4 border border-red-300 shadow-sm">
+                        再抽一次
+                    </button>
+                </div>
+            ` : '';
+
+            // 行程預覽卡片
+            const dayCards = TripData.days.map((day, idx) => `
+                <button onclick="Actions.selectDayAndNavigate(${idx})" class="bg-red-900/80 border-2 border-yellow-500/30 hover:bg-red-800 hover:border-yellow-400 p-8 rounded-2xl text-left transition-all group shadow-lg transform hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="text-yellow-400 text-xl font-bold uppercase tracking-widest bg-red-950/50 px-3 py-1 rounded-lg border border-yellow-500/20">Day ${day.dayNumber}</div>
+                        <div class="text-3xl group-hover:scale-125 transition-transform">👉</div>
+                    </div>
+                    <div class="text-white text-3xl font-bold group-hover:text-yellow-200 mt-2 font-serif-tc leading-relaxed">${day.theme}</div>
+                </button>
+            `).join('');
+
+            return `
+                <div class="relative bg-gradient-to-b from-red-900/50 to-transparent p-6 md:p-12 text-center border-b border-white/10">
+                    <div class="max-w-4xl mx-auto backdrop-blur-sm bg-black/30 p-8 md:p-12 rounded-3xl border border-yellow-500/30 shadow-2xl">
+                        <h2 class="text-5xl md:text-6xl font-bold text-yellow-400 font-serif-tc mb-6 drop-shadow-lg leading-tight">歡迎爸媽來台灣！</h2>
+                        <p class="text-2xl md:text-3xl text-white mb-10 font-bold leading-relaxed">吃好住好，Huat Ah! <br><span class="inline-block animate-bounce mt-4 text-5xl">🧧 🐲 🍍</span></p>
+                        <button onclick="Actions.navigate('itinerary')" class="bg-yellow-500 hover:bg-yellow-400 text-red-900 text-3xl font-bold py-6 px-16 rounded-full shadow-xl transform transition hover:scale-105 flex items-center gap-4 mx-auto border-4 border-white/20">
+                            <span class="text-4xl">📅</span> 查看每日行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lucky Draw -->
+                <div class="max-w-5xl mx-auto mt-12 p-8 md:p-12 bg-white rounded-[2.5rem] shadow-2xl relative overflow-hidden mb-12">
+                    <div class="absolute top-0 left-0 w-full h-6 bg-gradient-to-r from-yellow-300 via-red-500 to-yellow-300"></div>
+                    <div class="text-center mb-12">
+                        <h3 class="text-4xl md:text-5xl font-bold text-red-900 flex items-center justify-center gap-4 font-serif-tc"><span class="text-5xl">🏮</span> 每日好運紅包</h3>
+                        <p class="text-slate-600 text-2xl mt-4 font-bold">點擊紅包，看看今天的運氣！</p>
+                    </div>
+                    <div class="flex justify-center gap-8 md:gap-16 mb-4 flex-wrap">${packetsHtml}</div>
+                    ${fortuneHtml}
+                </div>
+
+                <!-- Preview Grid -->
+                <div class="container mx-auto px-4 mt-12 pb-24">
+                    <div class="flex items-center gap-4 mb-6 justify-center md:justify-start">
+                        <div class="h-10 w-2 bg-yellow-400 rounded-full"></div>
+                        <h3 class="text-3xl font-bold text-yellow-100 font-serif-tc">🗓️ 行程預覽 (點擊查看)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">${dayCards}</div>
                 </div>
             `;
-            alert('行程載入成功！');
+        };
+
+        const Preparation = () => `
+            <div class="container mx-auto max-w-6xl p-4 md:p-8 space-y-8 pb-32">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl md:text-5xl font-bold text-red-100 font-serif-tc drop-shadow-md">遊台重要貼士</h2>
+                    <p class="text-2xl text-yellow-200 mt-4">簡單好記，開心出遊！</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-red-600 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">🛂</div>
+                        <div><h3 class="text-3xl font-bold text-red-900 mb-3">證件要帶齊</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">1. 護照 (6個月有效期)<br>2. 入境卡 (上網填好)<br>3. 機票 & 酒店訂單</p></div>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-blue-500 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">🧥</div>
+                        <div><h3 class="text-3xl font-bold text-blue-900 mb-3">天氣與穿著</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">過年台北會冷 (15°C)！<br>請帶<span class="text-red-600">外套</span>和<span class="text-red-600">好走的鞋</span>。<br>洋蔥式穿法最保暖。</p></div>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-yellow-500 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">💰</div>
+                        <div><h3 class="text-3xl font-bold text-yellow-700 mb-3">錢幣匯率</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">1 馬幣 ≈ 7 台幣<br>帶現金去機場換，或用ATM提款。<br>大商場可刷卡。</p></div>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-green-600 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">💳</div>
+                        <div><h3 class="text-3xl font-bold text-green-800 mb-3">悠遊卡 (EasyCard)</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">人手一張！必買！<br>搭捷運、公車、買東西都能用。<br>7-11 就可以買到。</p></div>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-slate-600 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">🔌</div>
+                        <div><h3 class="text-3xl font-bold text-slate-800 mb-3">插頭電壓</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">台灣是 110V (扁孔)。<br>記得帶<span class="text-red-600">國際轉接頭</span>！<br>手機充電器通常通用。</p></div>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 border-l-8 border-red-800 shadow-xl flex items-start gap-6">
+                        <div class="text-6xl">🚨</div>
+                        <div><h3 class="text-3xl font-bold text-red-900 mb-3">緊急電話</h3><p class="text-xl text-slate-800 leading-relaxed font-bold">報警：110<br>救護車：119<br>台灣治安很好，放心玩！</p></div>
+                    </div>
+                </div>
+                <div class="text-center pt-12">
+                    <p class="text-2xl text-yellow-200 font-serif-tc">祝 爸爸媽媽 身體健康，旅途愉快！</p>
+                </div>
+            </div>
+        `;
+
+        const Itinerary = () => {
+            const currentDay = TripData.days[AppState.currentDayIndex];
+            
+            // Tabs
+            const tabsHtml = TripData.days.map((day, index) => {
+                const isActive = index === AppState.currentDayIndex;
+                const activeClass = isActive 
+                    ? "bg-yellow-500 text-red-900 scale-110" 
+                    : "bg-red-900 text-yellow-100";
+                return `
+                <button onclick="Actions.selectDay(${index})" class="${activeClass} flex-shrink-0 px-8 py-4 rounded-2xl text-2xl font-bold whitespace-nowrap transition-all shadow-lg border-2 border-yellow-500/50">
+                    Day ${day.dayNumber}
+                </button>`;
+            }).join('');
+
+            // Activities
+            const activitiesHtml = currentDay.activities.map((act, idx) => `
+                <div class="relative flex gap-6 mb-10 last:mb-0 group">
+                    <div class="relative z-10 w-14 h-14 flex-shrink-0 rounded-full bg-white border-4 border-red-500 text-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                        ${act.icon}
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-red-700 font-bold text-xl bg-red-100 px-4 py-1 rounded-full border border-red-200 shadow-sm">${act.time}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-3xl leading-tight mb-2">${act.title}</h4>
+                        <p class="text-slate-700 text-xl md:text-2xl font-medium leading-relaxed">${act.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Map Markers
+            const markersHtml = currentDay.activities.map((act, idx) => {
+                const top = 20 + ((idx * 13) % 60);
+                const left = 50 + ((idx % 2 === 0 ? 1 : -1) * 15);
+                return `
+                <div class="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center hover:z-50 cursor-pointer group/marker transition-all duration-500" style="top: ${top}%; left: ${left}%;">
+                    <div class="bg-red-700 text-white text-lg md:text-xl font-bold px-4 py-2 rounded-lg shadow-xl mb-2 whitespace-nowrap opacity-100 border-2 border-white z-20">
+                        ${act.title}
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-red-600 border-4 border-white shadow-lg animate-bounce flex items-center justify-center text-sm font-bold text-white z-10" style="animation-delay: ${idx * 200}ms">
+                        ${idx + 1}
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `
+            <div class="flex-1 flex flex-col container mx-auto px-4 py-6 h-full min-h-0">
+                <div class="flex gap-4 mb-6 overflow-x-auto pb-4 scrollbar-hide flex-shrink-0">${tabsHtml}</div>
+                <div class="flex-1 min-h-0 pb-6">
+                    <div class="h-full flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <!-- Left Panel -->
+                        <div class="w-full md:w-1/2 lg:w-[450px] flex flex-col bg-slate-50 border-r border-slate-200 overflow-hidden h-1/2 md:h-full">
+                            <div class="relative h-48 md:h-56 bg-gray-200 flex-shrink-0">
+                                <img src="https://picsum.photos/seed/${currentDay.imgUrl}/800/600" class="w-full h-full object-cover" alt="Day thumbnail" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex items-end p-6">
+                                    <div><h3 class="text-yellow-400 text-3xl md:text-4xl font-bold font-serif-tc shadow-black drop-shadow-lg leading-tight">Day ${currentDay.dayNumber}<br><span class="text-white">${currentDay.theme}</span></h3></div>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-8">
+                                <div class="bg-red-50 p-6 rounded-2xl border-2 border-red-200 text-red-900 shadow-sm">
+                                    <div class="flex items-center gap-2 mb-2"><span class="text-2xl">📌</span><span class="font-bold text-xl">今日重點：</span></div>
+                                    <p class="text-xl md:text-2xl font-medium leading-relaxed">${currentDay.highlights}</p>
+                                </div>
+                                <div class="relative pl-3 md:pl-4">
+                                    <div class="absolute left-[26px] top-4 bottom-4 w-1 bg-red-200 rounded-full"></div>
+                                    ${activitiesHtml}
+                                </div>
+                                <div class="text-center pt-8 pb-4"><span class="text-slate-400 text-lg">--- Day ${currentDay.dayNumber} 結束 ---</span></div>
+                            </div>
+                        </div>
+                        <!-- Right Panel (Map) -->
+                        <div class="flex-1 bg-blue-50 relative overflow-hidden group h-96 md:h-auto border-t-4 md:border-t-0 md:border-l-4 border-slate-200">
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid meet">
+                                <path d="M200,50 Q230,60 250,100 Q280,180 260,300 Q240,450 200,550 Q160,450 140,300 Q120,150 160,80 Q180,50 200,50 Z" fill="#dbeafe" stroke="#3b82f6" stroke-width="4" />
+                            </svg>
+                            ${markersHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        };
+
+        const Admin = () => {
+            if (!EditData) Actions.initAdmin();
+            
+            const daysHtml = EditData.days.map((day, dayIndex) => {
+                const activitiesInputs = day.activities.map((act, actIndex) => `
+                    <div class="flex flex-col md:flex-row gap-4 items-start p-4 bg-slate-50 rounded-xl group hover:bg-yellow-50 transition-colors relative border border-slate-100">
+                        <button onclick="Actions.removeActivity(${dayIndex}, ${actIndex})" class="absolute top-2 right-2 text-slate-300 hover:text-red-500 transition-colors text-2xl font-bold px-2">✕</button>
+                        <div class="flex gap-3 w-full md:w-40 flex-shrink-0">
+                            <div class="w-1/2"><input value="${act.time}" onchange="Actions.updateEditData('days.${dayIndex}.activities.${actIndex}.time', this.value)" class="w-full p-2 bg-white text-black border border-slate-200 rounded text-center text-lg font-bold" /></div>
+                            <div class="w-1/2"><input value="${act.icon}" onchange="Actions.updateEditData('days.${dayIndex}.activities.${actIndex}.icon', this.value)" class="w-full p-2 bg-white text-black border border-slate-200 rounded text-center text-2xl" /></div>
+                        </div>
+                        <div class="flex-1 w-full space-y-3">
+                            <input value="${act.title}" onchange="Actions.updateEditData('days.${dayIndex}.activities.${actIndex}.title', this.value)" class="w-full p-2 bg-transparent text-black text-xl font-bold border-b border-dashed border-slate-300 focus:border-yellow-500 outline-none" />
+                            <textarea rows="2" onchange="Actions.updateEditData('days.${dayIndex}.activities.${actIndex}.description', this.value)" class="w-full p-2 bg-transparent text-black text-lg border-b border-dashed border-slate-300 focus:border-yellow-500 outline-none">${act.description}</textarea>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                <div class="bg-white rounded-2xl border-2 border-slate-200 overflow-hidden relative shadow-sm mb-10">
+                    <button onclick="Actions.removeDay(${dayIndex})" class="absolute top-4 right-4 z-10 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors border border-red-200">🗑️ 刪除 Day ${day.dayNumber}</button>
+                    <div class="bg-slate-100 p-6 border-b border-slate-200 flex flex-col md:flex-row gap-6 items-start md:items-center pr-32">
+                        <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold whitespace-nowrap text-xl">Day ${day.dayNumber}</div>
+                        <div class="flex-1 w-full">
+                            <label class="text-sm font-bold text-slate-500 uppercase">主題</label>
+                            <input value="${day.theme}" onchange="Actions.updateEditData('days.${dayIndex}.theme', this.value)" class="w-full font-bold text-2xl text-black bg-transparent border-b border-slate-300 focus:border-yellow-500 outline-none py-1" />
+                        </div>
+                        <div class="flex-1 w-full">
+                            <label class="text-sm font-bold text-slate-500 uppercase">圖片關鍵字</label>
+                            <input value="${day.imgUrl}" onchange="Actions.updateEditData('days.${dayIndex}.imgUrl', this.value)" class="w-full text-lg text-black bg-transparent border-b border-slate-300 focus:border-yellow-500 outline-none py-1" />
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-500 uppercase mb-2">今日亮點</label>
+                            <textarea rows="2" onchange="Actions.updateEditData('days.${dayIndex}.highlights', this.value)" class="w-full p-3 text-black text-xl border border-slate-200 rounded focus:ring-1 focus:ring-yellow-500 outline-none">${day.highlights}</textarea>
+                        </div>
+                        <div class="space-y-6 pl-4 border-l-4 border-yellow-500/20">
+                            ${activitiesInputs}
+                            <button onclick="Actions.addActivity(${dayIndex})" class="w-full py-4 border-2 border-dashed border-slate-300 text-slate-400 rounded-xl hover:border-yellow-400 hover:text-yellow-600 font-bold text-xl transition-colors">+ 新增活動</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `
+            <div class="container mx-auto p-4 md:p-8 pb-24 max-w-5xl">
+                <div class="bg-white rounded-xl shadow-2xl overflow-hidden border border-yellow-500/30">
+                    <div class="bg-slate-800 p-6 flex justify-between items-center border-b border-slate-700 sticky top-0 z-20">
+                        <div><h2 class="text-3xl font-bold text-yellow-400 font-serif-tc">🔧 行程編輯模式</h2></div>
+                        <div class="flex gap-4">
+                            <button onclick="Actions.cancelAdmin()" class="px-6 py-3 rounded-lg text-slate-300 hover:text-white font-bold hover:bg-slate-700 transition-colors text-lg">取消</button>
+                            <button onclick="Actions.saveAdmin()" class="px-8 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold shadow-lg transform active:scale-95 transition-all flex items-center gap-2 text-lg">💾 儲存</button>
+                        </div>
+                    </div>
+                    <div class="p-6 bg-slate-50 overflow-y-auto max-h-[80vh]">
+                        <div class="mb-8 p-6 bg-white rounded-lg border border-slate-200 shadow-sm">
+                            <label class="block text-slate-700 font-bold mb-2 text-xl">旅程標題</label>
+                            <input value="${EditData.title}" onchange="Actions.updateEditData('title', this.value)" class="w-full text-2xl font-bold text-black p-4 border border-slate-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none" />
+                        </div>
+                        <div class="space-y-10">${daysHtml}</div>
+                        <div class="mt-10 text-center">
+                             <button onclick="Actions.addDay()" class="px-8 py-4 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold shadow-sm border border-slate-300 text-xl">+ 新增一天</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        };
+
+        // ==========================================
+        // 4. 主渲染循環 (Render Loop)
+        // ==========================================
+        function Render() {
+            const app = document.getElementById('app');
+            let content = '';
+            
+            // Header is always present
+            content += Header();
+            
+            // Main Content Area
+            content += '<main class="flex-1 overflow-y-auto scrollbar-hide flex flex-col">';
+            
+            switch(AppState.currentView) {
+                case 'home':
+                    content += Hero();
+                    break;
+                case 'itinerary':
+                    content += Itinerary();
+                    break;
+                case 'preparation':
+                    content += Preparation();
+                    break;
+                case 'admin':
+                    content += Admin();
+                    break;
+            }
+            
+            content += '</main>';
+            
+            app.innerHTML = content;
         }
+
+        // 啟動應用
+        Render();
+
     </script>
 </body>
 </html>
