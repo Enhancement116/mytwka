@@ -9,55 +9,91 @@
     <style>
         body { font-family: 'Poppins', 'Noto Serif TC', sans-serif; -webkit-tap-highlight-color: transparent; }
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
-        
         .pattern-bg {
             background-color: #7f1d1d;
             background-image: radial-gradient(#991b1b 1px, transparent 1px), radial-gradient(#991b1b 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
-
-        /* 滾動條美化 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #7f1d1d; }
         ::-webkit-scrollbar-thumb { background: #fca5a5; border-radius: 10px; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
     </style>
 </head>
 <body class="bg-red-950 text-white min-h-screen flex flex-col pattern-bg">
 
-    <div id="app" class="flex-1 flex flex-col">
-        </div>
+    <div id="app" class="flex-1 flex flex-col"></div>
 
     <script>
         const tripData = {
             title: "台灣新春之旅 2026",
             days: [
-                { dayNumber: 1, theme: "抵達 & 西門町", highlights: "歡迎來到台灣！第一天輕鬆為主。", activities: [
-                    { time: "14:00", title: "抵達桃園機場", description: "購買悠遊卡與SIM卡。", location: "桃園機場", icon: "✈️" },
-                    { time: "18:00", title: "探索西門町", description: "體驗台灣年輕人的活力。", location: "西門町", icon: "🛍️" }
-                ]},
-                { dayNumber: 2, theme: "老台北年味", highlights: "感受迪化街的熱鬧年貨大街。", activities: [
-                    { time: "11:30", title: "午餐：鼎泰豐", description: "品嚐世界聞名的小籠包。", location: "信義路/南西店", icon: "🥟" },
-                    { time: "14:00", title: "迪化街年貨大街", description: "感受最濃厚的年味。", location: "大稻埕", icon: "🧧" }
-                ]},
-                { dayNumber: 3, theme: "九份放天燈", highlights: "前往山城九份，平溪放天燈祈福。", activities: [
-                    { time: "11:30", title: "九份老街茶樓", description: "阿妹茶樓品茶欣賞美景。", location: "九份", icon: "🍵" },
-                    { time: "17:30", title: "平溪放天燈", description: "寫下新年願望。Huat Ah!", location: "平溪", icon: " Lantern" }
-                ]}
+                {
+                    dayNumber: 1, theme: "抵達 & 西門町", highlights: "歡迎來到台灣！第一天輕鬆為主，適應氣候，享受街頭美食。",
+                    activities: [
+                        { time: "14:00", title: "抵達桃園機場", description: "搭乘機場捷運直達台北車站。購買悠遊卡與SIM卡。", location: "桃園機場", icon: "✈️" },
+                        { time: "16:00", title: "飯店辦理入住", description: "前往西門町飯店辦理入住，稍作休息。", location: "西門町", icon: "🏨" },
+                        { time: "18:00", title: "探索西門町", description: "體驗台灣年輕人的活力與熱鬧氛圍。", location: "西門町", icon: "🛍️" },
+                        { time: "19:00", title: "晚餐：街頭小吃", description: "推薦：阿宗麵線、豪大大雞排、老天祿滷味。", location: "西門町商圈", icon: "🍜" }
+                    ]
+                },
+                {
+                    dayNumber: 2, theme: "老台北年味", highlights: "感受迪化街的熱鬧年貨大街，體驗傳統台灣新年的氣氛。",
+                    activities: [
+                        { time: "09:30", title: "中正紀念堂", description: "參觀自由廣場與衛兵交接儀式。", location: "自由廣場", icon: "🏛️" },
+                        { time: "11:30", title: "午餐：鼎泰豐", description: "品嚐小籠包 (建議提早抽號碼牌)。", location: "信義路/南西店", icon: "🥟" },
+                        { time: "14:00", title: "迪化街年貨大街", description: "感受最濃年味，參拜霞海城隍廟。", location: "大稻埕", icon: "🧧" },
+                        { time: "18:00", title: "寧夏夜市", description: "必吃：圓環邊蚵仔煎、劉芋仔蛋黃芋餅。", location: "寧夏路", icon: "🍢" }
+                    ]
+                },
+                {
+                    dayNumber: 3, theme: "九份放天燈", highlights: "前往山城九份，傍晚在平溪放天燈祈福，許下新年願望。",
+                    activities: [
+                        { time: "10:00", title: "前往九份老街", description: "搭乘包車或客運前往瑞芳九份。", location: "瑞芳", icon: "🚕" },
+                        { time: "11:30", title: "九份老街茶樓", description: "在阿妹茶樓品茶，欣賞山海美景。", location: "九份", icon: "🍵" },
+                        { time: "15:30", title: "十分瀑布", description: "台版尼加拉瀑布，壯觀迷人。", location: "十分", icon: "🌊" },
+                        { time: "17:30", title: "平溪放天燈", description: "寫下全家人新年願望，Huat Ah!", location: "平溪/十分", icon: "🏮" }
+                    ]
+                },
+                {
+                    dayNumber: 4, theme: "現代台北 & 購物", highlights: "登上台北101，信義區購物，為家人購置新衣新鞋。",
+                    activities: [
+                        { time: "10:30", title: "台北 101 觀景台", description: "從 89 樓俯瞰台北市景。", location: "台北 101", icon: "🏙️" },
+                        { time: "13:00", title: "信義區商圈", description: "新光三越、微風南山逛街購物。", location: "信義區", icon: "🛍️" },
+                        { time: "16:00", title: "松山文創園區", description: "逛逛誠品生活，欣賞文創商品。", location: "松菸", icon: "🎨" },
+                        { time: "19:00", title: "饒河街夜市", description: "胡椒餅、藥燉排骨。參拜慈祐宮。", location: "饒河街", icon: "🐉" }
+                    ]
+                },
+                {
+                    dayNumber: 5, theme: "溫泉與淡水夕陽", highlights: "前往北投泡湯放鬆身心，下午到淡水欣賞美麗夕陽。",
+                    activities: [
+                        { time: "10:00", title: "北投溫泉博物館", description: "參觀日式建築與地熱谷。", location: "新北投", icon: "♨️" },
+                        { time: "12:00", title: "午餐：溫泉拉麵", description: "享用熱騰騰的滿來溫泉拉麵。", location: "新北投", icon: "🍜" },
+                        { time: "14:30", title: "淡水老街", description: "搭捷運至淡水，品嚐阿給、魚酥。", location: "淡水", icon: "🚢" },
+                        { time: "17:00", title: "漁人碼頭夕陽", description: "在情人橋欣賞落日美景。", location: "漁人碼頭", icon: "🌅" }
+                    ]
+                },
+                {
+                    dayNumber: 6, theme: "伴手禮 & 返程", highlights: "採買鳳梨酥、牛軋糖等伴手禮，帶著滿滿回憶回家。",
+                    activities: [
+                        { time: "10:00", title: "佳德/微熱山丘", description: "購買知名鳳梨酥當作伴手禮。", location: "松山區", icon: "🍍" },
+                        { time: "12:00", title: "最後午餐", description: "享用道地的台式牛肉麵。", location: "台北市區", icon: "🥢" },
+                        { time: "14:00", title: "前往機場", description: "搭乘機場捷運前往桃園機場。", location: "台北車站", icon: "🚕" },
+                        { time: "16:00", title: "搭機返馬", description: "平安回家，期待下次再來玩！", location: "桃園機場", icon: "✈️" }
+                    ]
+                }
             ]
         };
 
         const fortunes = [
-            { title: "Huat Ah!", desc: "今年運勢旺到夠力！旅行順順利利！" },
-            { title: "Ong Mali!", desc: "手氣好過人！去夜市玩遊戲一定贏！" },
-            { title: "Sui La!", desc: "心情美美，拍照 Post 上網一定很多 Like！" },
-            { title: "Boleh!", desc: "想買就買！減肥是回馬之後的事！" }
+            { title: "Huat Ah! 發啊!", desc: "今年運勢旺到夠力！旅途順利，吃好睡好沒煩惱！" },
+            { title: "Ong Mali! 旺來!", desc: "手氣好過人！去夜市玩遊戲一定贏，要不要買張樂透？" },
+            { title: "Sui La! 水啦!", desc: "心情美美，拍照 Post 上網一定很多 Like！" },
+            { title: "Boleh! 可以!", desc: "想買就買，不用看價錢！減肥是回國之後的事！" },
+            { title: "Geng Chow! 勁抽!", desc: "體力好精神好，走整天都不累，你是最靚的！" }
         ];
 
         const state = { view: 'home', dayIndex: 0, packetOpenedIndex: null, currentFortune: null };
@@ -84,99 +120,103 @@
                 let classes = "relative w-24 h-36 md:w-40 md:h-56 bg-red-700 rounded-2xl shadow-xl transition-all duration-300 flex flex-col items-center justify-center overflow-hidden ";
                 if (isOpened && !isCurrent) classes += "grayscale opacity-50 cursor-not-allowed ";
                 else if (!isOpened) classes += "hover:-translate-y-2 active:scale-95 cursor-pointer ";
-
-                return `
-                <button onclick="app.openPacket(${index})" ${isOpened ? 'disabled' : ''} class="${classes}">
+                return `<button onclick="app.openPacket(${index})" ${isOpened ? 'disabled' : ''} class="${classes}">
                     <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center border-2 border-yellow-600/30">
-                         <div class="w-12 h-12 md:w-20 md:h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center bg-red-700 shadow-inner">
+                        <div class="w-12 h-12 md:w-20 md:h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center bg-red-700 shadow-inner">
                             <span class="text-2xl md:text-5xl text-yellow-400 font-serif-tc font-bold">福</span>
-                         </div>
+                        </div>
                     </div>
                 </button>`;
             }).join('');
 
-            return `
-                <div class="p-4 md:p-8 text-center">
-                    <div class="max-w-4xl mx-auto backdrop-blur-sm bg-black/20 p-6 md:p-10 rounded-3xl border border-yellow-500/20 mb-6">
-                        <h2 class="text-3xl md:text-5xl font-bold text-yellow-400 font-serif-tc mb-4">歡迎爸媽來台灣！</h2>
-                        <p class="text-lg md:text-2xl text-white mb-6 font-bold">吃好住好，Huat Ah! 🧧</p>
-                        <button onclick="app.navigate('itinerary')" class="bg-yellow-500 text-red-900 text-lg md:text-2xl font-bold py-3 px-8 rounded-full shadow-lg">查看詳細行程</button>
-                    </div>
-
-                    <div class="max-w-xl mx-auto bg-white/95 rounded-[2rem] p-6 shadow-2xl overflow-hidden text-red-900">
-                        <h3 class="text-xl md:text-3xl font-bold mb-4 font-serif-tc flex items-center justify-center gap-2">
-                            <span>🏮</span> 每日好運紅包
-                        </h3>
-                        <div class="flex justify-center gap-3 md:gap-6 mb-6">
-                            ${packets}
-                        </div>
-                        ${state.currentFortune ? `
-                            <div class="animate-fadeIn bg-yellow-50 border-2 border-dashed border-red-500 rounded-2xl p-4 mt-2">
-                                <div class="text-2xl md:text-3xl font-bold text-red-700 mb-1">${state.currentFortune.title}</div>
-                                <p class="text-base md:text-xl font-bold text-slate-700 leading-tight">${state.currentFortune.desc}</p>
-                                <button onclick="app.resetPacket()" class="text-sm font-bold text-red-500 mt-2 underline">再抽一次</button>
-                            </div>
-                        ` : '<p class="text-sm text-slate-500 font-bold">點選一個紅包，看看今日運勢！</p>'}
-                    </div>
+            return `<div class="p-4 md:p-8 text-center max-w-4xl mx-auto">
+                <div class="backdrop-blur-sm bg-black/20 p-6 md:p-10 rounded-3xl border border-yellow-500/20 mb-6">
+                    <h2 class="text-3xl md:text-5xl font-bold text-yellow-400 font-serif-tc mb-4">歡迎爸媽來台灣！</h2>
+                    <p class="text-lg md:text-2xl text-white mb-6 font-bold">吃好住好，Huat Ah! 🧧🐲</p>
+                    <button onclick="app.navigate('itinerary')" class="bg-yellow-500 text-red-900 text-lg md:text-2xl font-bold py-3 px-8 rounded-full shadow-lg transition-transform active:scale-95">點我開始旅程</button>
                 </div>
-            `;
+                <div class="bg-white/95 rounded-[2rem] p-6 shadow-2xl text-red-900">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4 font-serif-tc flex items-center justify-center gap-2"><span>🏮</span> 每日好運紅包</h3>
+                    <div class="flex justify-center gap-3 md:gap-6 mb-4">${packets}</div>
+                    ${state.currentFortune ? `<div class="animate-fadeIn bg-yellow-50 border-2 border-dashed border-red-500 rounded-2xl p-4">
+                        <div class="text-xl md:text-3xl font-bold text-red-700 mb-1">${state.currentFortune.title}</div>
+                        <p class="text-sm md:text-lg font-bold text-slate-700">${state.currentFortune.desc}</p>
+                        <button onclick="app.resetPacket()" class="text-xs font-bold text-red-400 mt-2 underline">再抽一次</button>
+                    </div>` : `<p class="text-sm text-slate-500 font-bold">選個紅包，啟動好心情！</p>`}
+                </div>
+            </div>`;
         };
 
         const DayView = () => {
             const day = tripData.days[state.dayIndex];
             const tabs = tripData.days.map((d, idx) => `
-                <button onclick="app.selectDay(${idx})" class="flex-shrink-0 px-6 py-2 rounded-xl text-base md:text-xl font-bold transition-all ${state.dayIndex === idx ? 'bg-yellow-500 text-red-900' : 'bg-red-900 text-yellow-100'}">
-                    Day ${d.dayNumber}
-                </button>
+                <button onclick="app.selectDay(${idx})" class="flex-shrink-0 px-5 py-2 rounded-xl text-base md:text-lg font-bold transition-all ${state.dayIndex === idx ? 'bg-yellow-500 text-red-900' : 'bg-red-900 text-yellow-100'}">Day ${d.dayNumber}</button>
             `).join('');
 
-            return `
-                <div class="p-4 md:p-6 max-w-4xl mx-auto w-full">
-                    <div class="flex gap-3 overflow-x-auto pb-4 mb-4 scrollbar-hide">${tabs}</div>
-                    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden text-slate-800">
-                        <div class="bg-red-800 p-4 md:p-6 text-white border-b-4 border-yellow-500">
-                            <span class="text-xs md:text-sm bg-yellow-500 text-red-900 px-2 py-0.5 rounded font-bold">DAY ${day.dayNumber}</span>
-                            <h3 class="text-xl md:text-3xl font-bold font-serif-tc mt-1">${day.theme}</h3>
-                        </div>
-                        <div class="p-4 md:p-6">
-                            <p class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500 text-sm md:text-lg mb-6 font-medium italic">"${day.highlights}"</p>
-                            <div class="space-y-6 relative">
-                                <div class="absolute left-3 top-0 bottom-0 w-0.5 bg-red-100"></div>
-                                ${day.activities.map(act => `
-                                    <div class="relative pl-10">
-                                        <div class="absolute left-0 w-7 h-7 bg-white border-2 border-red-500 rounded-full flex items-center justify-center text-sm z-10">${act.icon}</div>
-                                        <div class="text-xs font-bold text-red-600">${act.time} · ${act.location}</div>
-                                        <div class="text-base md:text-xl font-bold text-red-900">${act.title}</div>
-                                        <div class="text-sm md:text-base text-slate-500 leading-snug">${act.description}</div>
-                                    </div>
-                                `).join('')}
-                            </div>
+            return `<div class="p-4 md:p-6 max-w-4xl mx-auto w-full">
+                <div class="flex gap-2 overflow-x-auto pb-4 mb-2 scrollbar-hide">${tabs}</div>
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden text-slate-800">
+                    <div class="bg-red-800 p-4 text-white border-b-4 border-yellow-500">
+                        <span class="text-xs bg-yellow-500 text-red-900 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Day ${day.dayNumber}</span>
+                        <h3 class="text-xl md:text-3xl font-bold font-serif-tc mt-1">${day.theme}</h3>
+                    </div>
+                    <div class="p-4 md:p-6">
+                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 text-sm md:text-lg mb-8 font-medium italic">"${day.highlights}"</div>
+                        <div class="space-y-8 relative">
+                            <div class="absolute left-3.5 top-0 bottom-0 w-0.5 bg-red-100"></div>
+                            ${day.activities.map(act => `
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 w-8 h-8 bg-white border-2 border-red-500 rounded-full flex items-center justify-center text-sm z-10 shadow-sm">${act.icon}</div>
+                                    <div class="text-xs font-bold text-red-600 mb-0.5">${act.time} · ${act.location}</div>
+                                    <div class="text-base md:text-xl font-bold text-red-900 leading-tight">${act.title}</div>
+                                    <div class="text-sm md:text-base text-slate-500 mt-1">${act.description}</div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 </div>
-            `;
+            </div>`;
         };
 
         const Preparation = () => `
-            <div class="p-4 md:p-8 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-2xl flex items-center gap-4 shadow-lg">
-                    <span class="text-4xl">🧥</span>
-                    <div><h4 class="font-bold text-red-900">天氣穿著</h4><p class="text-sm text-slate-600">台北約15-20度，請帶外套與好走的鞋。</p></div>
+            <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-red-600">
+                        <span class="text-4xl">🛂</span>
+                        <div><h4 class="font-bold text-red-900 text-lg">證件帶齊</h4><p class="text-sm font-bold">1. 護照 (6個月有效期)<br>2. 入境卡 (網路填妥)<br>3. 酒店訂單</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-blue-500">
+                        <span class="text-4xl">🧥</span>
+                        <div><h4 class="font-bold text-blue-900 text-lg">天氣與穿著</h4><p class="text-sm font-bold">台北約 15°C！請帶外套與好走的鞋，洋蔥式穿法最保暖。</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-yellow-500">
+                        <span class="text-4xl">💰</span>
+                        <div><h4 class="font-bold text-yellow-700 text-lg">匯率現金</h4><p class="text-sm font-bold">1 馬幣 ≈ 7 台幣。大商場可刷卡，小吃攤需現金。</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-green-600">
+                        <span class="text-4xl">💳</span>
+                        <div><h4 class="font-bold text-green-800 text-lg">悠遊卡</h4><p class="text-sm font-bold">必買！搭捷運、公車、買東西通用。7-11 即可購買。</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-slate-600">
+                        <span class="text-4xl">🔌</span>
+                        <div><h4 class="font-bold text-slate-800 text-lg">插頭電壓</h4><p class="text-sm font-bold">110V (扁孔)。請帶國際轉接頭。</p></div>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-red-800">
+                        <span class="text-4xl">🚨</span>
+                        <div><h4 class="font-bold text-red-900 text-lg">緊急聯絡</h4><p class="text-sm font-bold">報警 110 / 救護車 119。台灣治安很好，請放心玩！</p></div>
+                    </div>
                 </div>
-                <div class="bg-white p-5 rounded-2xl flex items-center gap-4 shadow-lg">
-                    <span class="text-4xl">💳</span>
-                    <div><h4 class="font-bold text-red-900">悠遊卡</h4><p class="text-sm text-slate-600">搭車、超商買東西必備，機場可買。</p></div>
-                </div>
-                <div class="bg-white p-5 rounded-2xl flex items-center gap-4 shadow-lg text-center col-span-full">
-                    <p class="w-full text-yellow-200 font-bold">💡 貼心提醒：台灣治安很好，請放心遊玩！</p>
-                </div>
+                <div class="text-center py-10"><p class="text-xl text-yellow-200 font-serif-tc">祝 爸爸媽媽 身體健康，旅途愉快！</p></div>
             </div>
         `;
 
         function render() {
             const appDiv = document.getElementById('app');
-            let content = state.view === 'home' ? Hero() : (state.view === 'itinerary' ? DayView() : Preparation());
-            appDiv.innerHTML = `${Header()}<main class="flex-1">${content}</main>`;
+            let content = '';
+            if (state.view === 'home') content = Hero();
+            else if (state.view === 'itinerary') content = DayView();
+            else if (state.view === 'preparation') content = Preparation();
+            appDiv.innerHTML = `${Header()}<main class="flex-1 overflow-y-auto scrollbar-hide">${content}</main>`;
         }
 
         window.app = {
@@ -189,7 +229,6 @@
             },
             resetPacket: () => { state.packetOpenedIndex = null; state.currentFortune = null; render(); }
         };
-
         render();
     </script>
 </body>
