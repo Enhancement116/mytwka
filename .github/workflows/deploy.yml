@@ -2,7 +2,7 @@ name: Deploy Vite site to Pages
 
 on:
   push:
-    branches: ["main"]  # 確保你的主分支名稱是 main，如果是 master 請修改
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -19,9 +19,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          # 這裡刪除了 cache: 'npm'
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-package-lock # 加入這行確保沒鎖定檔也能跑
       - name: Build
         run: npm run build
       - name: Upload artifact
