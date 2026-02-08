@@ -3,7 +3,6 @@ import { HeaderComponent } from './components/header.component';
 import { DayViewComponent } from './components/day-view.component';
 import { PreparationComponent } from './components/preparation.component';
 import { HeroComponent } from './components/hero.component';
-import { ChatAssistantComponent } from './components/chat-assistant.component';
 import { AdminEditorComponent } from './components/admin-editor.component';
 import { TripStore } from './services/trip.store';
 import { CommonModule } from '@angular/common';
@@ -13,7 +12,7 @@ type ViewState = 'home' | 'itinerary' | 'preparation' | 'admin';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, DayViewComponent, PreparationComponent, HeroComponent, ChatAssistantComponent, AdminEditorComponent],
+  imports: [CommonModule, HeaderComponent, DayViewComponent, PreparationComponent, HeroComponent, AdminEditorComponent],
   template: `
     <div class="h-screen flex flex-col pattern-bg font-sans">
       <app-header [title]="tripStore.tripData().title" (navClick)="navigate($event)" />
@@ -87,11 +86,6 @@ type ViewState = 'home' | 'itinerary' | 'preparation' | 'admin';
         }
 
       </main>
-
-      <!-- Chat only shows if not in admin mode to avoid clutter -->
-      @if (currentView() !== 'admin') {
-          <app-chat-assistant />
-      }
     </div>
   `
 })
