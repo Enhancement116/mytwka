@@ -1,30 +1,67 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Taiwan CNY Trip 2026</title>
+    <title>Perjalanan Taiwan 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', 'Noto Serif TC', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .font-serif-tc { font-family: 'Noto Serif TC', serif; }
+        body {
+            font-family: 'Poppins', 'Noto Serif TC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-serif-tc {
+            font-family: 'Noto Serif TC', serif;
+        }
+
         .pattern-bg {
             background-color: #7f1d1d;
             background-image: radial-gradient(#991b1b 1px, transparent 1px), radial-gradient(#991b1b 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #7f1d1d; }
-        ::-webkit-scrollbar-thumb { background: #fca5a5; border-radius: 10px; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #7f1d1d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fca5a5;
+            border-radius: 10px;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
     </style>
 </head>
-<body class="bg-red-950 text-white min-h-screen flex flex-col pattern-bg">
 
+<body class="bg-red-950 text-white min-h-screen flex flex-col pattern-bg">
     <div id="app" class="flex-1 flex flex-col"></div>
 
     <script>
@@ -32,68 +69,87 @@
             title: "台灣新春之旅 2026",
             days: [
                 {
-                    dayNumber: 1, theme: "抵達 & 西門町", highlights: "歡迎來到台灣！第一天輕鬆為主，適應氣候，享受街頭美食。",
-                    activities: [
-                        { time: "14:00", title: "抵達桃園機場", description: "搭乘機場捷運直達台北車站。購買悠遊卡與SIM卡。", location: "桃園機場", icon: "✈️" },
-                        { time: "16:00", title: "飯店辦理入住", description: "前往西門町飯店辦理入住，稍作休息。", location: "西門町", icon: "🏨" },
-                        { time: "18:00", title: "探索西門町", description: "體驗台灣年輕人的活力與熱鬧氛圍。", location: "西門町", icon: "🛍️" },
-                        { time: "19:00", title: "晚餐：街頭小吃", description: "推薦：阿宗麵線、豪大大雞排、老天祿滷味。", location: "西門町商圈", icon: "🍜" }
+                    dayNumber: 1, theme: "抵達高雄 · 台味初體驗", highlights: "歡迎來到台灣！首日行程以輕鬆為主，洗去旅途疲憊。", activities: [
+                        { time: "18:30 ~ 19:00", title: "抵達小港機場(KHH) ✈️", description: "抵達後，可搭乘高雄捷運（紅線）感受城市的節奏，隨後轉乘 UBER 直接前往飯店，免去拖行重型行李的奔波。", location: "小港機場。", icon: "✈️" },
+                        { time: "19:00 ~ 19:30 ", title: "飯店辦理入住 🏨", description: "在飯店辦理 Check-in 並稍作休息、整理行李。讓自己換上一身輕便的服裝，準備開啟今晚的味蕾之旅。", location: "飯店。", icon: "🏨" },
+                        { time: "20:00 ~ 21:00", title: "晚餐：賣塩順台菜 🍲", description: "第一餐特別安排充滿古早味的「賣塩順台菜」。這裡不僅環境懷舊，更是體驗正宗台灣在地風味的絕佳選擇。推薦試試他們的招牌料理，感受南台灣的熱情與美味。", location: "晚餐。", icon: "🍲" },
+                        { time: "21:00 ~ 21:30", title: "返回飯店休息 💤", description: "帶著滿足的胃回到飯店。建議早點休息，調整狀態，為明天精彩的南台灣探索之旅儲備飽滿的體力。", location: "充電時刻。", icon: "💤" }
+
                     ]
                 },
                 {
-                    dayNumber: 2, theme: "老台北年味", highlights: "感受迪化街的熱鬧年貨大街，體驗傳統台灣新年的氣氛。",
-                    activities: [
-                        { time: "09:30", title: "中正紀念堂", description: "參觀自由廣場與衛兵交接儀式。", location: "自由廣場", icon: "🏛️" },
-                        { time: "11:30", title: "午餐：鼎泰豐", description: "品嚐小籠包 (建議提早抽號碼牌)。", location: "信義路/南西店", icon: "🥟" },
-                        { time: "14:00", title: "迪化街年貨大街", description: "感受最濃年味，參拜霞海城隍廟。", location: "大稻埕", icon: "🧧" },
-                        { time: "18:00", title: "寧夏夜市", description: "必吃：圓環邊蚵仔煎、劉芋仔蛋黃芋餅。", location: "寧夏路", icon: "🍢" }
+                    dayNumber: 2, theme: "眷村時光 · 經典地標與購物饗宴", highlights: "漫遊左營舊城，從懷舊眷村到現代百貨，感受高雄的多樣魅力。", activities: [
+                        { time: "10:00 ~ 11:30", title: "早餐：寬來順傳統早點 🥟", description: "來到左營必吃的道地早餐！現做現蒸的肉包與香酥燒餅，搭配醇厚的豆漿。在傳統市場的熱鬧氛圍中，開啟元氣滿滿的一天。", location: "眷村裡的排隊美味。", icon: "🥟" },
+                        { time: "11:30 ~ 12:00", title: "果貿社區：小香港探索 📸", description: "走進被譽為「高雄小香港」的果貿社區。獨特的環狀建築結構，層層疊疊的窗戶非常有視覺衝擊力，是攝影愛好者不可錯過的街拍聖地。", location: "圓弧形的壯觀建築。", icon: "📸" },
+                        { time: "12:00 ~ 13:30", title: "龍虎塔&蓮池潭 🧧", description: "高雄最具代表性的地標。記得「龍口入、虎口出」的傳統習俗，祈求消災解厄、大吉大利。漫步在蓮池潭畔，享受徐徐微風。", location: "祈福轉運與湖光山色。", icon: "🧧" },
+                        { time: "13:30 ~ 15:00", title: "午餐：道地小吃之選 🍛", description: "提供兩種絕佳選擇：喜歡鹹香滋味的可以選擇「正宗鴨肉飯」；若偏好蔬食，則有「素食人家」。兩者皆能讓你品嚐到最貼近高雄生活的美味。", location: "在地激推的好味道。", icon: "🍛" },
+                        { time: "15:30 ~ 16:30", title: "生活體驗：高雄流行音樂中心/Focus 🎧", description: "前往愛河灣畔的高流中心（Focus 區域），欣賞前衛的建築設計。這裡不僅是音樂基地，更是結合生活美學與海港景致的放鬆空間。", location: "感受港都的藝文脈動。", icon: "🎧" },
+                        { time: "17:00 ~ 18:30", title: "購物：SKM Park Outlets 🛍️", description: "全台首座美式生活 Outlets。不管是國際品牌折扣或是戶外休閒穿搭，都能在這裡一站式購齊，享受充滿異國風情的購物樂趣。", location: "精品折扣與美式造景。", icon: "🛍️" },
+                        { time: "18:30 ~ 19:30", title: "晚餐：傳統與創新的碰撞 🍚", description: "晚餐可挑戰榮獲肯定的「老店柏宏肉燥飯」，品嚐那滷到入口即化的噴香美味；或是前往充滿童趣與創意的「小孩吃素」，翻轉你對素食的刻板印象。", location: "高雄最強肉燥飯/創意素食。", icon: "🍚" },
+                        { time: "19:30 ~ 20:00", title: "瑞豐夜市：港都夜生活 🍡", description: "行程的高潮！瑞豐夜市擁有各式各樣的創意小吃與好玩的小遊戲。建議留點胃給這裡的酥炸大魷魚或在地奶茶，感受最道地的夜生活。", location: "高雄在地人的最愛夜市。", icon: "🍡" },
+                        { time: "20:00 ~ 21:00", title: "返回飯店 🚇", description: "滿載而歸後，可選擇搭乘便捷的高雄捷運或轉乘 UBER 返回飯店，洗個熱水澡，好好休息。", location: "輕鬆賦歸。", icon: "🚇" }
                     ]
                 },
                 {
-                    dayNumber: 3, theme: "九份放天燈", highlights: "前往山城九份，傍晚在平溪放天燈祈福，許下新年願望。",
-                    activities: [
-                        { time: "10:00", title: "前往九份老街", description: "搭乘包車或客運前往瑞芳九份。", location: "瑞芳", icon: "🚕" },
-                        { time: "11:30", title: "九份老街茶樓", description: "在阿妹茶樓品茶，欣賞山海美景。", location: "九份", icon: "🍵" },
-                        { time: "15:30", title: "十分瀑布", description: "台版尼加拉瀑布，壯觀迷人。", location: "十分", icon: "🌊" },
-                        { time: "17:30", title: "平溪放天燈", description: "寫下全家人新年願望，Huat Ah!", location: "平溪/十分", icon: "🏮" }
+                    dayNumber: 3, theme: "國境之南 · 山海與美食的對話", highlights: "從高雄老字號早點出發，深入屏東探索海洋、部落櫻花與地標美景。", activities: [
+                        { time: "10:00 ~ 11:00", title: "早餐：興隆居 🥟", description: "享用高雄最富盛名的傳統早點。咬下一口會噴汁的招牌湯包，搭配酥脆燒餅夾蛋。這是老高雄人開啟一天的標準儀式，也是不容錯過的經典美味。", location: "傳承六十年的排隊傳奇。", icon: "🥟" },
+                        { time: "13:00 ~ 15:00", title: "國立海洋生物博物館 🐧", description: "前往全台規模最大的海生館。漫步在壯觀的海底隧道，近距離觀察可愛的企鵝、小白鯨與繽紛的珊瑚礁，沉浸在湛藍的神祕水世界中。", location: "奇幻的海底隧道。", icon: "🐧" },
+                        { time: "16:30 ~ 17:00", title: "萬丹紅豆餅 🥯", description: "途經萬丹，一定要來份皮薄餡多的紅豆餅！滿滿的在地紅豆內餡香甜濃郁，是旅途中最療癒的午間小點心。", location: "屏東最具代表性的國民甜點。", icon: "🥯" },
+                        { time: "17:30 ~ 18:30", title: "午後美食：萬巒豬腳/雁行咖啡 🍖☕", description: "無論是追求口感極致、鹹香Q彈的萬巒豬腳，還是想在雁型咖啡靜享一杯職人手沖的香醇，都能為您的午後旅程增添不一樣的色彩。", location: "屏東必吃地標與職人精品咖啡。。", icon: "🍖☕" },
+                        { time: "18:45 ~ 19:00", title: "屏東縣民公園 🌿", description: "造訪勇奪多項國際大獎的地景公園。在夕陽餘暉下，欣賞舊工業結構與現代地景藝術的完美融合，也是在地人最愛的散步聖地。", location: "廢棄紙漿廠改建的工業美學。", icon: "🌿" },
+                        { time: "20:00 ~ 21:30", title: "晚餐：鼎王麻辣鍋 / 金田家 & 有樹食 🥘", description: "晚餐提供三種風格的精緻饗宴：若是熱愛辛香滋味，首推**「鼎王麻辣鍋」，讓經典的鴨血豆腐與濃醇湯頭暖個身；想品嚐日式職人魂，「金田家」的濃厚系拉麵是極佳選擇；若偏好清新自然，「有樹食」**則提供精緻的創意蔬食，為整日旅程溫柔收尾。", location: "暖心又暖胃的旅程終點。", icon: "🥘" },
+                        { time: "22:00 ~ 22:30", title: "返回飯店 🚗", description: "帶著豐富的影像與味蕾記憶，輕鬆返回飯店休息，享受愜意的夜晚。", location: "沉澱心情，悠閒賦歸。", icon: "🚗" }
                     ]
                 },
                 {
-                    dayNumber: 4, theme: "現代台北 & 購物", highlights: "登上台北101，信義區購物，為家人購置新衣新鞋。",
-                    activities: [
-                        { time: "10:30", title: "台北 101 觀景台", description: "從 89 樓俯瞰台北市景。", location: "台北 101", icon: "🏙️" },
-                        { time: "13:00", title: "信義區商圈", description: "新光三越、微風南山逛街購物。", location: "信義區", icon: "🛍️" },
-                        { time: "16:00", title: "松山文創園區", description: "逛逛誠品生活，欣賞文創商品。", location: "松菸", icon: "🎨" },
-                        { time: "19:00", title: "饒河街夜市", description: "胡椒餅、藥燉排骨。參拜慈祐宮。", location: "饒河街", icon: "🐉" }
+                    dayNumber: 4, theme: "古都漫步 · 府城味蕾巡禮", highlights: "穿梭台南巷弄，從百年古蹟到文創百貨，體驗全台最道地的慢活時光。", activities: [
+                        { time: "11:00 ~ 13:00", title: "早餐：上海好味道小籠湯包 🥟", description: "以薄皮多汁、內餡鮮甜著稱的小籠湯包開啟府城第一站。看著師傅現場現包，每一口都能品嚐到飽滿的湯汁精華，感受老店的誠意。", location: "台南在地人心中的平民版鼎泰豐。", icon: "🥟" },
+                        { time: "13:15 ~ 13:45", title: "赤崁樓：歷史的印記 🏮", description: "走訪台南最具代表性的建築。在紅瓦磚牆間細讀台江內海的興衰史，欣賞著名的九座御龜碑，感受三百多年來的歲月流轉與文化交融。", location: "荷蘭時期留下的國定古蹟。", icon: "🏮" },
+                        { time: "14:00 ~ 14:30", title: "孔廟文化園區 ⛩️", description: "漫步在古老的紅牆與老樹之間。除了參觀莊嚴的孔廟本體，周邊的府中街更是充滿趣味小店，是感受府城悠閒氛圍的最佳去處。", location: "全台首學與文學氣息。", icon: "⛩️" },
+                        { time: "14:30 ~ 15:30", title: "午後甜點：震湶雪花冰 / 冰鄉 🍧", description: "在台南的午後，來一份浮誇又豐盛的雪花冰是必須的！無論是層次分明的「震泉雪花冰」，還是創意滿滿的「冰箱」，都能徹底消解南台灣的暑氣。", location: "台南必嚐的夏日冰品。", icon: "🍧" },
+                        { time: "15:45 ~ 16:30", title: "林百貨：摩登時光倒流 🛍️", description: "走進 1930 年代的高級百貨公司，搭乘全台珍稀的懷舊指針式電梯直達頂樓，遠眺古都街景，選購極具設計感的文創伴手禮。", location: "全台唯一設有神社的復古百貨。", icon: "🛍️" },
+                        { time: "16:45 ~ 17:45", title: "鴻牛溫體牛肉湯 / 毛蔬 🥣🌿", description: "無論是追求極致鮮甜的鴻牛溫體牛，還是想品味創新美學的毛蔬創意蔬食，兩者皆是府城夜晚不容錯過的頂級美味。", location: "府城味蕾盛宴：鮮美溫體牛或精緻蔬食的雙重選擇。", icon: "🥣🌿" },
+                        { time: "18:00 ~ 18:30", title: "正興商圈：文青街區漫步 🎨", description: "這裡是台南文創的發源地之一，許多特色小店與設計工作室隱身在老屋中。在巷弄間隨意穿梭，處處都是驚喜與拍照打卡點。", location: "創意與傳統共生的老街。", icon: "🎨" },
+                        { time: "18:45 ~ 19:00", title: "國華街：美食的一級戰區 🍢", description: "從碗粿、捲尾家霜淇淋到各式古早味點心。這裡匯集了台南最知名的銅板美食，建議與好友分食，才能挑戰更多的府城味蕾。", location: "府城小吃的精華地段。", icon: "🍢" },
+                        { time: "19:15 ~ 20:15", title: "花園夜市：夜色饗宴 🎡", description: "旗海飄揚的「花園夜市」是台南夜生活的核心。無論是特色小吃、趣味遊戲還是百貨飾品，這裡的熱鬧氣氛將為您的台南行劃下完美句點。", location: "規模全台數一數二的超人氣夜市。", icon: "🎡" },
+                        { time: "20:15 ~ 21:00", title: "返回飯店 🚗", description: "胃袋跟心靈都裝得滿滿的！告別台南的熱情，啟程返回溫暖的飯店。整理今日戰利品，窩進被窩享受最愜意的旅行時光。", location: "沉澱心情，悠閒賦歸。", icon: "🚗" }
+
                     ]
                 },
                 {
-                    dayNumber: 5, theme: "溫泉與淡水夕陽", highlights: "前往北投泡湯放鬆身心，下午到淡水欣賞美麗夕陽。",
-                    activities: [
-                        { time: "10:00", title: "北投溫泉博物館", description: "參觀日式建築與地熱谷。", location: "新北投", icon: "♨️" },
-                        { time: "12:00", title: "午餐：溫泉拉麵", description: "享用熱騰騰的滿來溫泉拉麵。", location: "新北投", icon: "🍜" },
-                        { time: "14:30", title: "淡水老街", description: "搭捷運至淡水，品嚐阿給、魚酥。", location: "淡水", icon: "🚢" },
-                        { time: "17:00", title: "漁人碼頭夕陽", description: "在情人橋欣賞落日美景。", location: "漁人碼頭", icon: "🌅" }
+                    dayNumber: 5, theme: "", highlights: "", activities: [
+                        { time: "10:00", title: "", description: "。", location: "", icon: "" },
+                        { time: "11:00", title: "", description: "", location: "", icon: "" },
+                        { time: "12:00", title: "", description: "", location: "", icon: "" },
+                        { time: "14:30", title: "", description: "", location: "", icon: "" },
+                        { time: "16:00", title: "", description: " ", location: "", icon: "" },
+                        { time: "17:30", title: "", description: " ", location: "", icon: "" },
+                        { time: "18:30", title: "", description: "", location: "", icon: "" },
+                        { time: "19:30", title: "", description: "", location: "", icon: "" },
+                        { time: "20:30", title: "", description: "", location: "", icon: "" }
                     ]
                 },
                 {
-                    dayNumber: 6, theme: "伴手禮 & 返程", highlights: "採買鳳梨酥、牛軋糖等伴手禮，帶著滿滿回憶回家。",
-                    activities: [
-                        { time: "10:00", title: "佳德/微熱山丘", description: "購買知名鳳梨酥當作伴手禮。", location: "松山區", icon: "🍍" },
-                        { time: "12:00", title: "最後午餐", description: "享用道地的台式牛肉麵。", location: "台北市區", icon: "🥢" },
-                        { time: "14:00", title: "前往機場", description: "搭乘機場捷運前往桃園機場。", location: "台北車站", icon: "🚕" },
-                        { time: "16:00", title: "搭機返馬", description: "平安回家，期待下次再來玩！", location: "桃園機場", icon: "✈️" }
+                    dayNumber: 6, theme: "", highlights: "", activities: [
+                        { time: "10:00", title: "", description: "。", location: "", icon: "" },
+                        { time: "11:00", title: "", description: "", location: "", icon: "" },
+                        { time: "12:00", title: "", description: "", location: "", icon: "" },
+                        { time: "14:30", title: "", description: "", location: "", icon: "" },
+                        { time: "16:00", title: "", description: " ", location: "", icon: "" },
+                        { time: "17:30", title: "", description: " ", location: "", icon: "" },
+                        { time: "18:30", title: "", description: "", location: "", icon: "" },
+                        { time: "19:30", title: "", description: "", location: "", icon: "" },
+                        { time: "20:30", title: "", description: "", location: "", icon: "" }
                     ]
                 }
             ]
         };
 
         const fortunes = [
-            { title: "Huat Ah! 發啊!", desc: "今年運勢旺到夠力！旅途順利，吃好睡好沒煩惱！" },
-            { title: "Ong Mali! 旺來!", desc: "手氣好過人！去夜市玩遊戲一定贏，要不要買張樂透？" },
-            { title: "Sui La! 水啦!", desc: "心情美美，拍照 Post 上網一定很多 Like！" },
-            { title: "Boleh! 可以!", desc: "想買就買，不用看價錢！減肥是回國之後的事！" },
-            { title: "Geng Chow! 勁抽!", desc: "體力好精神好，走整天都不累，你是最靚的！" }
+            { title: "Huat Ah!", desc: "今年運勢旺到夠力！旅行順順利利！" },
+            { title: "Ong Mali!", desc: "手氣好過人！去夜市玩遊戲一定贏！" },
+            { title: "Sui La!", desc: "心情美美，拍照 Post 上網一定很多 Like！" },
+            { title: "Boleh!", desc: "想買就買！減肥是回馬之後的事！" }
         ];
 
         const state = { view: 'home', dayIndex: 0, packetOpenedIndex: null, currentFortune: null };
@@ -102,7 +158,7 @@
             <header class="bg-red-900 border-b-2 border-yellow-500 sticky top-0 z-50 shadow-md">
                 <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                     <div class="flex items-center gap-2 cursor-pointer" onclick="app.navigate('home')">
-                        <div class="w-8 h-8 rounded-full border-2 border-yellow-400 flex items-center justify-center text-sm bg-red-800 text-yellow-400">福</div>
+                        <div class="w-8 h-8 rounded-full border-2 border-yellow-400 flex items-center justify-center text-sm bg-red-800 text-yellow-400 font-bold">福</div>
                         <h1 class="text-lg md:text-2xl font-bold text-yellow-100 font-serif-tc tracking-tighter">${tripData.title}</h1>
                     </div>
                     <nav class="flex gap-4 md:gap-8 font-bold text-yellow-100/90 text-sm md:text-lg">
@@ -122,7 +178,7 @@
                 else if (!isOpened) classes += "hover:-translate-y-2 active:scale-95 cursor-pointer ";
                 return `<button onclick="app.openPacket(${index})" ${isOpened ? 'disabled' : ''} class="${classes}">
                     <div class="absolute inset-0 bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center border-2 border-yellow-600/30">
-                        <div class="w-12 h-12 md:w-20 md:h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center bg-red-700 shadow-inner">
+                        <div class="w-12 h-12 md:w-20 md:h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center bg-red-700">
                             <span class="text-2xl md:text-5xl text-yellow-400 font-serif-tc font-bold">福</span>
                         </div>
                     </div>
@@ -131,18 +187,18 @@
 
             return `<div class="p-4 md:p-8 text-center max-w-4xl mx-auto">
                 <div class="backdrop-blur-sm bg-black/20 p-6 md:p-10 rounded-3xl border border-yellow-500/20 mb-6">
-                    <h2 class="text-3xl md:text-5xl font-bold text-yellow-400 font-serif-tc mb-4">歡迎爸媽來台灣！</h2>
-                    <p class="text-lg md:text-2xl text-white mb-6 font-bold">吃好住好，Huat Ah! 🧧🐲</p>
-                    <button onclick="app.navigate('itinerary')" class="bg-yellow-500 text-red-900 text-lg md:text-2xl font-bold py-3 px-8 rounded-full shadow-lg transition-transform active:scale-95">點我開始旅程</button>
+                    <h2 class="text-3xl md:text-5xl font-bold text-yellow-400 font-serif-tc mb-4">歡迎來台灣！</h2>
+                    <p class="text-lg md:text-2xl text-white mb-6 font-bold">吃好住好，Huat Ah! 🧧</p>
+                    <button onclick="app.navigate('itinerary')" class="bg-yellow-500 text-red-900 text-lg md:text-2xl font-bold py-3 px-8 rounded-full shadow-lg transition-transform active:scale-95">點選查看行程</button>
                 </div>
                 <div class="bg-white/95 rounded-[2rem] p-6 shadow-2xl text-red-900">
                     <h3 class="text-xl md:text-2xl font-bold mb-4 font-serif-tc flex items-center justify-center gap-2"><span>🏮</span> 每日好運紅包</h3>
                     <div class="flex justify-center gap-3 md:gap-6 mb-4">${packets}</div>
                     ${state.currentFortune ? `<div class="animate-fadeIn bg-yellow-50 border-2 border-dashed border-red-500 rounded-2xl p-4">
-                        <div class="text-xl md:text-3xl font-bold text-red-700 mb-1">${state.currentFortune.title}</div>
+                        <div class="text-xl md:text-2xl font-bold text-red-700 mb-1">${state.currentFortune.title}</div>
                         <p class="text-sm md:text-lg font-bold text-slate-700">${state.currentFortune.desc}</p>
                         <button onclick="app.resetPacket()" class="text-xs font-bold text-red-400 mt-2 underline">再抽一次</button>
-                    </div>` : `<p class="text-sm text-slate-500 font-bold">選個紅包，啟動好心情！</p>`}
+                    </div>` : `<p class="text-sm text-slate-500 font-bold">選個紅包，抽個好彩頭！</p>`}
                 </div>
             </div>`;
         };
@@ -150,26 +206,26 @@
         const DayView = () => {
             const day = tripData.days[state.dayIndex];
             const tabs = tripData.days.map((d, idx) => `
-                <button onclick="app.selectDay(${idx})" class="flex-shrink-0 px-5 py-2 rounded-xl text-base md:text-lg font-bold transition-all ${state.dayIndex === idx ? 'bg-yellow-500 text-red-900' : 'bg-red-900 text-yellow-100'}">Day ${d.dayNumber}</button>
+                <button onclick="app.selectDay(${idx})" class="flex-shrink-0 px-6 py-2 rounded-xl text-base md:text-lg font-bold transition-all ${state.dayIndex === idx ? 'bg-yellow-500 text-red-900' : 'bg-red-900 text-yellow-100'}">Day ${d.dayNumber}</button>
             `).join('');
 
             return `<div class="p-4 md:p-6 max-w-4xl mx-auto w-full">
                 <div class="flex gap-2 overflow-x-auto pb-4 mb-2 scrollbar-hide">${tabs}</div>
                 <div class="bg-white rounded-2xl shadow-2xl overflow-hidden text-slate-800">
                     <div class="bg-red-800 p-4 text-white border-b-4 border-yellow-500">
-                        <span class="text-xs bg-yellow-500 text-red-900 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Day ${day.dayNumber}</span>
-                        <h3 class="text-xl md:text-3xl font-bold font-serif-tc mt-1">${day.theme}</h3>
+                        <span class="text-xs bg-yellow-500 text-red-900 px-2 py-0.5 rounded font-bold uppercase">Day ${day.dayNumber}</span>
+                        <h3 class="text-xl md:text-2xl font-bold font-serif-tc mt-1">${day.theme}</h3>
                     </div>
                     <div class="p-4 md:p-6">
-                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 text-sm md:text-lg mb-8 font-medium italic">"${day.highlights}"</div>
-                        <div class="space-y-8 relative">
+                        <p class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500 text-sm md:text-base mb-6 italic">"${day.highlights}"</p>
+                        <div class="space-y-6 relative">
                             <div class="absolute left-3.5 top-0 bottom-0 w-0.5 bg-red-100"></div>
                             ${day.activities.map(act => `
-                                <div class="relative pl-12">
-                                    <div class="absolute left-0 w-8 h-8 bg-white border-2 border-red-500 rounded-full flex items-center justify-center text-sm z-10 shadow-sm">${act.icon}</div>
-                                    <div class="text-xs font-bold text-red-600 mb-0.5">${act.time} · ${act.location}</div>
-                                    <div class="text-base md:text-xl font-bold text-red-900 leading-tight">${act.title}</div>
-                                    <div class="text-sm md:text-base text-slate-500 mt-1">${act.description}</div>
+                                <div class="relative pl-10">
+                                    <div class="absolute left-0 w-7 h-7 bg-white border-2 border-red-500 rounded-full flex items-center justify-center text-xs z-10 shadow-sm">${act.icon}</div>
+                                    <div class="text-xs font-bold text-red-600">${act.time} · ${act.location}</div>
+                                    <div class="text-base md:text-lg font-bold text-red-900">${act.title}</div>
+                                    <div class="text-sm text-slate-500 leading-snug">${act.description}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -180,33 +236,36 @@
 
         const Preparation = () => `
             <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-4">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl md:text-4xl font-bold text-yellow-400 font-serif-tc">遊台重要貼士</h2>
+                    <p class="text-yellow-100/70 text-sm">準備好這幾樣，旅行更輕鬆！</p>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-red-600">
                         <span class="text-4xl">🛂</span>
-                        <div><h4 class="font-bold text-red-900 text-lg">證件帶齊</h4><p class="text-sm font-bold">1. 護照 (6個月有效期)<br>2. 入境卡 (網路填妥)<br>3. 酒店訂單</p></div>
+                        <div><h4 class="font-bold text-red-900 text-lg">證件帶齊</h4><p class="text-sm font-bold">1. 護照 (6個月有效期)<br>2. 入境卡 (網路填妥)<br>3. 飯店訂單</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-blue-500">
                         <span class="text-4xl">🧥</span>
-                        <div><h4 class="font-bold text-blue-900 text-lg">天氣與穿著</h4><p class="text-sm font-bold">台北約 15°C！請帶外套與好走的鞋，洋蔥式穿法最保暖。</p></div>
+                        <div><h4 class="font-bold text-blue-900 text-lg">天氣穿著</h4><p class="text-sm font-bold">過年期間可能會有冷氣團 (約15°C)，請帶件外套與好走的鞋。</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-yellow-500">
                         <span class="text-4xl">💰</span>
-                        <div><h4 class="font-bold text-yellow-700 text-lg">匯率現金</h4><p class="text-sm font-bold">1 馬幣 ≈ 7 台幣。大商場可刷卡，小吃攤需現金。</p></div>
+                        <div><h4 class="font-bold text-yellow-700 text-lg">匯率現金</h4><p class="text-sm font-bold">1 馬幣 ≈ 7 台幣。建議提前換好台幣現金，小吃店多收現金。</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-green-600">
                         <span class="text-4xl">💳</span>
-                        <div><h4 class="font-bold text-green-800 text-lg">悠遊卡</h4><p class="text-sm font-bold">必買！搭捷運、公車、買東西通用。7-11 即可購買。</p></div>
+                        <div><h4 class="font-bold text-green-800 text-lg">悠遊卡</h4><p class="text-sm font-bold">必買！搭捷運、公車、買東西都可用，機場或超商皆有售。</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-slate-600">
                         <span class="text-4xl">🔌</span>
-                        <div><h4 class="font-bold text-slate-800 text-lg">插頭電壓</h4><p class="text-sm font-bold">110V (扁孔)。請帶國際轉接頭。</p></div>
+                        <div><h4 class="font-bold text-slate-800 text-lg">插頭電壓</h4><p class="text-sm font-bold">台灣為 110V (兩平孔)。手機充電頭通常通用，其餘請帶轉接頭。</p></div>
                     </div>
                     <div class="bg-white p-5 rounded-2xl flex items-start gap-4 shadow-xl text-slate-800 border-l-8 border-red-800">
                         <span class="text-4xl">🚨</span>
-                        <div><h4 class="font-bold text-red-900 text-lg">緊急聯絡</h4><p class="text-sm font-bold">報警 110 / 救護車 119。台灣治安很好，請放心玩！</p></div>
+                        <div><h4 class="font-bold text-red-900 text-lg">緊急聯絡</h4><p class="text-sm font-bold">報警 110 / 救護車 119。台灣治安極佳，請保持愉快心情玩耍！</p></div>
                     </div>
                 </div>
-                <div class="text-center py-10"><p class="text-xl text-yellow-200 font-serif-tc">祝 爸爸媽媽 身體健康，旅途愉快！</p></div>
             </div>
         `;
 
@@ -224,12 +283,14 @@
             selectDay: (idx) => { state.dayIndex = idx; render(); },
             openPacket: (idx) => {
                 state.packetOpenedIndex = idx;
-                state.currentFortune = fortunes[Math.floor(Math.random()*fortunes.length)];
+                state.currentFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
                 render();
             },
             resetPacket: () => { state.packetOpenedIndex = null; state.currentFortune = null; render(); }
         };
+
         render();
     </script>
 </body>
+
 </html>
